@@ -74,11 +74,14 @@ func (c *baseColumn) setTableName(table string) error {
 }
 
 func (c *baseColumn) SerializeSqlForColumnList(out *bytes.Buffer) error {
-	if c.table != "" {
-		_ = out.WriteByte('`')
-		_, _ = out.WriteString(c.table)
-		_, _ = out.WriteString("`.")
-	}
+	// danny modified. we don't need prefixing table name
+	/*
+		if c.table != "" {
+			_ = out.WriteByte('`')
+			_, _ = out.WriteString(c.table)
+			_, _ = out.WriteString("`.")
+		}
+	*/
 	_, _ = out.WriteString("`")
 	_, _ = out.WriteString(c.name)
 	_ = out.WriteByte('`')

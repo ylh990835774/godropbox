@@ -474,9 +474,9 @@ func newInsertStatement(
 	columns ...NonAliasColumn) InsertStatement {
 
 	return &insertStatementImpl{
-		table:   t,
-		columns: columns,
-		rows:    make([][]Expression, 0, 1),
+		table:                 t,
+		columns:               columns,
+		rows:                  make([][]Expression, 0, 1),
 		onDuplicateKeyUpdates: make([]columnAssignment, 0, 0),
 	}
 }
@@ -524,7 +524,8 @@ func (s *insertStatementImpl) Comment(comment string) InsertStatement {
 }
 
 func (s *insertStatementImpl) String(database string) (sql string, err error) {
-	if !validIdentifierName(database) {
+	// danny modified. if database empty, not validate it
+	if database != "" && !validIdentifierName(database) {
 		return "", errors.New("Invalid database name specified")
 	}
 
@@ -696,7 +697,8 @@ func (u *updateStatementImpl) Comment(comment string) UpdateStatement {
 }
 
 func (u *updateStatementImpl) String(database string) (sql string, err error) {
-	if !validIdentifierName(database) {
+	// danny modify. we need to optionally set database name
+	if database != "" && !validIdentifierName(database) {
 		return "", errors.New("Invalid database name specified")
 	}
 
@@ -831,7 +833,8 @@ func (d *deleteStatementImpl) Comment(comment string) DeleteStatement {
 }
 
 func (d *deleteStatementImpl) String(database string) (sql string, err error) {
-	if !validIdentifierName(database) {
+	// danny modify. we need to optionally set database name
+	if database != "" && !validIdentifierName(database) {
 		return "", errors.New("Invalid database name specified")
 	}
 
